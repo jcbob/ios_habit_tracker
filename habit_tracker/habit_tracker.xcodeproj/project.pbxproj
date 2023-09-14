@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D044D262AAF4B9100ED79F2 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */; };
+		2D044D282AAF514B00ED79F2 /* HabitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */; };
 		2D6000DD2AAF42A700BC524E /* HabitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6000DC2AAF42A700BC524E /* HabitListView.swift */; };
 		2DD6C2112AAF3E0200DA897A /* habit_trackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD6C2102AAF3E0200DA897A /* habit_trackerApp.swift */; };
 		2DD6C2132AAF3E0200DA897A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD6C2122AAF3E0200DA897A /* Persistence.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
+		2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailView.swift; sourceTree = "<group>"; };
 		2D6000DC2AAF42A700BC524E /* HabitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListView.swift; sourceTree = "<group>"; };
 		2DD6C20D2AAF3E0200DA897A /* habit_tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = habit_tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD6C2102AAF3E0200DA897A /* habit_trackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = habit_trackerApp.swift; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 				2DD6C2122AAF3E0200DA897A /* Persistence.swift */,
 				2DD6C2172AAF3E0200DA897A /* ContentView.swift */,
 				2D6000DC2AAF42A700BC524E /* HabitListView.swift */,
+				2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */,
+				2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */,
 				2DD6C2192AAF3E0500DA897A /* Assets.xcassets */,
 				2DD6C21B2AAF3E0500DA897A /* habit_tracker.entitlements */,
 				2DD6C2142AAF3E0200DA897A /* habit_tracker.xcdatamodeld */,
@@ -148,11 +154,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D044D282AAF514B00ED79F2 /* HabitDetailView.swift in Sources */,
 				2DD6C2112AAF3E0200DA897A /* habit_trackerApp.swift in Sources */,
 				2D6000DD2AAF42A700BC524E /* HabitListView.swift in Sources */,
 				2DD6C2132AAF3E0200DA897A /* Persistence.swift in Sources */,
 				2DD6C2182AAF3E0200DA897A /* ContentView.swift in Sources */,
 				2DD6C2162AAF3E0200DA897A /* habit_tracker.xcdatamodeld in Sources */,
+				2D044D262AAF4B9100ED79F2 /* AddHabitView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

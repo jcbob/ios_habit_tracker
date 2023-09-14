@@ -8,8 +8,39 @@
 import SwiftUI
 
 struct HabitListView: View {
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Habit.title, ascending: true)], animation: .default)
+    private var habits: FetchedResults<Habit>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView{
+            List{
+                ForEach(habits){ listedHabit in
+                    NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
+                        Text(listedHabit.title!)
+                            .lineLimit(1)
+                    }
+                }
+                .onDelete(perform: deleteHabit)
+            }
+            .navigationTitle("Habit Tracker")
+            .toolbar{
+                ToolbarItem{
+                    NavigationLink(destination: AddHabitView()){
+                        Label("Add Habit", systemImage: "plus")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func deleteHabit(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { habits[$0] }.forEach(viewContext.delete)
+            try? viewContext.save()
+        }
     }
 }
 
