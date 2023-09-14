@@ -10,15 +10,42 @@ import SwiftUI
 struct HabitDetailView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.presentationMode) var presentationMode
     
     var selectedHabit: Habit
     
     var body: some View {
-        Text(selectedHabit.title!)
-            .font(.system(size: 50))
-            .padding(.top, 150)
-        
+        VStack{
+            Text(selectedHabit.title!)
+                .font(.system(size: 50))
+                .padding(.top, 150)
+            
+            Spacer()
+            
+            if (selectedHabit.status == "Incomplete"){
+                Button(action: completeHabit){
+                    Text("Complete Habit")
+                }
+            }
+            
+            Spacer()
+        }
     }
+    
+    private func completeHabit(){
+        withAnimation{
+            selectedHabit.status = "Completed"
+            
+            do {
+                try viewContext.save()
+                presentationMode.wrappedValue.dismiss()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
 }
 
 /*struct HabitDetailView_Previews: PreviewProvider {
@@ -26,4 +53,4 @@ struct HabitDetailView: View {
         HabitDetailView(selectedHabit: <#Habit#>).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
-
+*/

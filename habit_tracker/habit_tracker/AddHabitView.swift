@@ -43,7 +43,7 @@ struct AddHabitView: View {
         withAnimation {
             let newHabit = Habit(context: viewContext)
             newHabit.title = habitTitle
-            newHabit.finishedStatus = false
+            newHabit.status = "Incomplete"
             
             do {
                 try viewContext.save()
