@@ -10,10 +10,10 @@ import SwiftUI
 @main
 struct habit_trackerApp: App {
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
-            HabitListView()
+            HabitListView(currentHour: Date.now)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
