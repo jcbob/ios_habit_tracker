@@ -8,6 +8,15 @@
 import SwiftUI
 import CoreData
 
+
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm:ss"
+    return formatter
+}()
+
+
+
 struct HabitListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -18,71 +27,68 @@ struct HabitListView: View {
     @SectionedFetchRequest<String?, Habit>(sectionIdentifier: \Habit.status, sortDescriptors: [SortDescriptor(\Habit.status, order: .reverse), SortDescriptor(\Habit.title)], animation: .default)
     private var habits: SectionedFetchResults<String?, Habit>
     
+    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State var currentHour: Date
-    @State var displayHour: String = ""
+    let calendar = Calendar.current
+    @State var dateReference = Date()
+    @State var resetCounter = 0
+    
+    @State var habitList: [Habit] = []
+    
     
     var body: some View {
-        VStack{
-            NavigationView{
-                List{
-                    ForEach(habits){ section in
-                        Section(header: Text(section.id!)){
-                            ForEach(section){ listedHabit in
-                                NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
-                                    Text(listedHabit.title!)
-                                        .lineLimit(1)
-                                        .onReceive(timer){_ in
-                                            currentHour = Date()
-                                            if(dateFormatter.string(from: currentHour) == "00:43"){
-                                                resetHabit(habit: listedHabit)
-                                            }
+        NavigationView{
+            List{
+                ForEach(habits){ section in
+                    Section(header: section.id!){
+                        ForEach(section){ listedHabit in
+                            NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
+                                Text(listedHabit.title!)
+                                    .lineLimit(1)
+                                    .onReceive(timer){_ in
+                                        if(newDayReset()){
+                                            resetAllHabits()
+                                            dateReference = Date.now
                                         }
-                                        .swipeActions(edge: .leading, content: {
-                                            if(listedHabit.status == "Incomplete"){
-                                                Button(action: {
-                                                    completeHabit(habit: listedHabit)
-                                                }, label: {
-                                                    Image(systemName: "checkmark.circle.fill")
-                                                })
-                                                .tint(.mint)
-                                            }
-                                            else{
-                                                Button(action: {
-                                                    resetHabit(habit: listedHabit)
-                                                }, label: {
-                                                    Image(systemName: "x.circle.fill")
-                                                })
-                                                .tint(.indigo)
-                                            }
-                                        })
-                                        .swipeActions(edge: .trailing, content: {
-                                            Button(role: .destructive, action: {
-                                                deleteHabit(habit: listedHabit)
+                                    }
+                                    .swipeActions(edge: .leading, content: {
+                                        if(listedHabit.status == "Incomplete"){
+                                            Button(action: {
+                                                completeHabit(habit: listedHabit)
                                             }, label: {
-                                                Image(systemName: "trash")
+                                                Image(systemName: "checkmark.circle.fill")
                                             })
+                                            .tint(.mint)
+                                        }
+                                        else{
+                                            Button(action: {
+                                                resetSelectedHabit(habit: listedHabit)
+                                            }, label: {
+                                                Image(systemName: "x.circle.fill")
+                                            })
+                                            .tint(.indigo)
+                                        }
+                                    })
+                                    .swipeActions(edge: .trailing, content: {
+                                        Button(role: .destructive, action: {
+                                            deleteHabit(habit: listedHabit)
+                                        }, label: {
+                                            Image(systemName: "trash")
                                         })
-                                }
+                                    })
                             }
-                        }
-                    }
-                    //.onDelete(perform: deleteHabit)
-                }
-                .navigationTitle("Habit Tracker")
-                .toolbar{
-                    ToolbarItem{
-                        NavigationLink(destination: AddHabitView()){
-                            Label("Add Habit", systemImage: "plus")
                         }
                     }
                 }
             }
-            
-            Text("It is \(dateFormatter.string(from: currentHour))")
-                .onReceive(timer){_ in
-                    currentHour = Date.now
+            .navigationTitle("Habit Tracker")
+            .toolbar{
+                ToolbarItem{
+                    NavigationLink(destination: AddHabitView()){
+                        Label("Add Habit", systemImage: "plus")
+                    }
                 }
+            }
         }
     }
     
@@ -96,7 +102,7 @@ struct HabitListView: View {
     }
     
     private func completeHabit(habit: Habit){
-        habit.status = "Completed"
+        habit.status = "Complete"
         do{
             try viewContext.save()
         } catch{
@@ -104,7 +110,7 @@ struct HabitListView: View {
         }
     }
     
-    private func resetHabit(habit: Habit){
+    private func resetSelectedHabit(habit: Habit){
         withAnimation{
             habit.status = "Incomplete"
             do{
@@ -115,22 +121,40 @@ struct HabitListView: View {
         }
     }
     
-    /*private func deleteHabit(offsets: IndexSet) {
-     withAnimation {
-     offsets.map { habits[$0] }.forEach(viewContext.delete)
-     try? viewContext.save()
-     }
-     }*/
-}
+    private func resetAllHabits(){
+        let fetchRequest: NSFetchRequest<Habit> = Habit.fetchRequest()
+        do{
+            let habits = try viewContext.fetch(fetchRequest)
+            
+            for habit in habits{
+                habit.status = "Incomplete"
+            }
+            try viewContext.save()
+        } catch{
+            print(error)
+        }
+    }
+    
+    private func newDayReset() -> Bool{
+        let dateCurrent = Date()
 
-private let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HH:mm"
-    return formatter
-}()
+        let dateCurrentComponents = calendar.dateComponents([.minute], from: dateCurrent)
+        let dateReferenceComponents = calendar.dateComponents([.minute], from: dateReference)
+
+        let dateCurrentDay = dateCurrentComponents.minute
+        let dateReferenceDay = dateReferenceComponents.minute
+
+
+        if(dateCurrentDay != dateReferenceDay){
+            return true
+        }else {
+            return false
+        }
+    }
+}
 
 struct HabitListView_Previews: PreviewProvider {
     static var previews: some View {
-        HabitListView(currentHour: Date.now)
+        HabitListView()
     }
 }

@@ -34,14 +34,13 @@ struct HabitDetailView: View {
     
     private func completeHabit(){
         withAnimation{
-            selectedHabit.status = "Completed"
+            selectedHabit.status = "Complete"
             
             do {
                 try viewContext.save()
                 presentationMode.wrappedValue.dismiss()
             } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                print(error)
             }
         }
     }
