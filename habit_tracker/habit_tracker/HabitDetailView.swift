@@ -16,20 +16,24 @@ struct HabitDetailView: View {
     
     var body: some View {
         VStack{
+            // show the habits title
             Text(selectedHabit.title!)
                 .font(.system(size: 50))
                 .padding(.top, 150)
             
             Spacer()
             
+            // show the habits description
             Text(selectedHabit.information!)
                 .foregroundColor(.secondary)
                 .background(.secondary)
                 .padding(.bottom, 16)
             
+            // show the number of times the habit has been completed / number of times the habit should be completed
             Text("\(selectedHabit.timesCompletedToday) / \(selectedHabit.timesPerDay)")
                 .padding(.bottom, 16)
             
+            // show the habits total completion count
             Text("Completed this habit a total of \(selectedHabit.completedCountTotal) times")
             
             Spacer()

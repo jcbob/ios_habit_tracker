@@ -23,6 +23,7 @@ My first take on a personal project - a habit tracker app for apple
 
 ### List view for all the habits
 [x] divide the finished and unfinished habits
+[ ] if the habit doesn't have a description center the habit title
 [ ] add swiping functionality to complete habits
 [ ] show only active habits
 [x] show how many times a habit has to be swiped to be completed (ex. "0/2")
