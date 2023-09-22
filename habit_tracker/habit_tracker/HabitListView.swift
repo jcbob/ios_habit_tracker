@@ -38,14 +38,15 @@ struct HabitListView: View {
                     Section(header: Text(section.id!)){
                         ForEach(section){ listedHabit in
                             ZStack{
-                                HStack{
+                                HStack(alignment: .center){
                                     // habit icon
                                     Text("ICON")
                                     
                                     VStack(alignment: .leading){
                                         // habit title
                                         Text(listedHabit.title!)
-                                            .lineLimit(1)
+                                            .font(.headline)
+                                            .lineLimit(2)
                                             .onReceive(timer){_ in
                                                 createDateReference()
                                                 if(newDayReset()){
@@ -82,11 +83,13 @@ struct HabitListView: View {
                                             })
                                         
                                         // habit description
-                                        Text(listedHabit.information!)
-                                            .multilineTextAlignment(.leading)
-                                            .font(.footnote)
-                                            .foregroundColor(.secondary)
-                                            .lineLimit(1)
+                                        if(!listedHabit.information!.isEmpty){
+                                            Text(listedHabit.information!)
+                                                .multilineTextAlignment(.leading)
+                                                .font(.footnote)
+                                                .foregroundColor(.secondary)
+                                                .lineLimit(1)
+                                        }
                                     }
                                     
                                     Spacer()
