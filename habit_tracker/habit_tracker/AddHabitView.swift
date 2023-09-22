@@ -17,8 +17,6 @@ struct AddHabitView: View {
     
     var body: some View {
         VStack{
-            
-            
             TextField("Add a habit...", text: $habitTitle)
                 .font(.system(size: 50))
                 .focused($titleFocus)
@@ -44,13 +42,13 @@ struct AddHabitView: View {
             let newHabit = Habit(context: viewContext)
             newHabit.title = habitTitle
             newHabit.status = "Incomplete"
+            newHabit.timesPerDay = 1
             
             do {
                 try viewContext.save()
                 presentationMode.wrappedValue.dismiss()
             } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                print(error)
             }
         }
     }

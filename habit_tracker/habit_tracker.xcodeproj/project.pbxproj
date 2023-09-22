@@ -9,7 +9,12 @@
 /* Begin PBXBuildFile section */
 		2D044D262AAF4B9100ED79F2 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */; };
 		2D044D282AAF514B00ED79F2 /* HabitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */; };
+		2D3DDCE52ABD9A290049BE09 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3DDCE12ABD9A290049BE09 /* Habit+CoreDataClass.swift */; };
+		2D3DDCE62ABD9A290049BE09 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3DDCE22ABD9A290049BE09 /* Habit+CoreDataProperties.swift */; };
+		2D3DDCE72ABD9A290049BE09 /* DateReference+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3DDCE32ABD9A290049BE09 /* DateReference+CoreDataClass.swift */; };
+		2D3DDCE82ABD9A290049BE09 /* DateReference+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3DDCE42ABD9A290049BE09 /* DateReference+CoreDataProperties.swift */; };
 		2D6000DD2AAF42A700BC524E /* HabitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6000DC2AAF42A700BC524E /* HabitListView.swift */; };
+		2D9E82E72AB8562600DF177D /* EditHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E82E62AB8562600DF177D /* EditHabitView.swift */; };
 		2DD6C2112AAF3E0200DA897A /* habit_trackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD6C2102AAF3E0200DA897A /* habit_trackerApp.swift */; };
 		2DD6C2132AAF3E0200DA897A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD6C2122AAF3E0200DA897A /* Persistence.swift */; };
 		2DD6C2162AAF3E0200DA897A /* habit_tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2DD6C2142AAF3E0200DA897A /* habit_tracker.xcdatamodeld */; };
@@ -21,7 +26,12 @@
 /* Begin PBXFileReference section */
 		2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
 		2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailView.swift; sourceTree = "<group>"; };
+		2D3DDCE12ABD9A290049BE09 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2D3DDCE22ABD9A290049BE09 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2D3DDCE32ABD9A290049BE09 /* DateReference+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateReference+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2D3DDCE42ABD9A290049BE09 /* DateReference+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateReference+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2D6000DC2AAF42A700BC524E /* HabitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListView.swift; sourceTree = "<group>"; };
+		2D9E82E62AB8562600DF177D /* EditHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabitView.swift; sourceTree = "<group>"; };
 		2DD6C20D2AAF3E0200DA897A /* habit_tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = habit_tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD6C2102AAF3E0200DA897A /* habit_trackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = habit_trackerApp.swift; sourceTree = "<group>"; };
 		2DD6C2122AAF3E0200DA897A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -43,6 +53,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D3DDCE02ABD91DB0049BE09 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2D3DDCE12ABD9A290049BE09 /* Habit+CoreDataClass.swift */,
+				2D3DDCE22ABD9A290049BE09 /* Habit+CoreDataProperties.swift */,
+				2D3DDCE32ABD9A290049BE09 /* DateReference+CoreDataClass.swift */,
+				2D3DDCE42ABD9A290049BE09 /* DateReference+CoreDataProperties.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2DD6C2042AAF3E0200DA897A = {
 			isa = PBXGroup;
 			children = (
@@ -62,11 +83,13 @@
 		2DD6C20F2AAF3E0200DA897A /* habit_tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2D3DDCE02ABD91DB0049BE09 /* Model */,
 				2DD6C2102AAF3E0200DA897A /* habit_trackerApp.swift */,
 				2DD6C2122AAF3E0200DA897A /* Persistence.swift */,
 				2DD6C2172AAF3E0200DA897A /* ContentView.swift */,
 				2D6000DC2AAF42A700BC524E /* HabitListView.swift */,
 				2D044D272AAF514B00ED79F2 /* HabitDetailView.swift */,
+				2D9E82E62AB8562600DF177D /* EditHabitView.swift */,
 				2D044D252AAF4B9100ED79F2 /* AddHabitView.swift */,
 				2DD6C2192AAF3E0500DA897A /* Assets.xcassets */,
 				2DD6C21B2AAF3E0500DA897A /* habit_tracker.entitlements */,
@@ -155,12 +178,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D044D282AAF514B00ED79F2 /* HabitDetailView.swift in Sources */,
+				2D3DDCE52ABD9A290049BE09 /* Habit+CoreDataClass.swift in Sources */,
+				2D3DDCE62ABD9A290049BE09 /* Habit+CoreDataProperties.swift in Sources */,
+				2D3DDCE72ABD9A290049BE09 /* DateReference+CoreDataClass.swift in Sources */,
 				2DD6C2112AAF3E0200DA897A /* habit_trackerApp.swift in Sources */,
 				2D6000DD2AAF42A700BC524E /* HabitListView.swift in Sources */,
 				2DD6C2132AAF3E0200DA897A /* Persistence.swift in Sources */,
 				2DD6C2182AAF3E0200DA897A /* ContentView.swift in Sources */,
 				2DD6C2162AAF3E0200DA897A /* habit_tracker.xcdatamodeld in Sources */,
 				2D044D262AAF4B9100ED79F2 /* AddHabitView.swift in Sources */,
+				2D9E82E72AB8562600DF177D /* EditHabitView.swift in Sources */,
+				2D3DDCE82ABD9A290049BE09 /* DateReference+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

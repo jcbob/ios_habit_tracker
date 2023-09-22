@@ -22,19 +22,48 @@ struct HabitDetailView: View {
             
             Spacer()
             
+            Text(selectedHabit.information!)
+                .foregroundColor(.secondary)
+                .background(.secondary)
+                .padding(.bottom, 16)
+            
+            Text("\(selectedHabit.timesCompletedToday) / \(selectedHabit.timesPerDay)")
+                .padding(.bottom, 16)
+            
+            Text("Completed this habit a total of \(selectedHabit.completedCountTotal) times")
+            
+            Spacer()
+            
+            // show a button to complete/reset a habit
             if (selectedHabit.status == "Incomplete"){
                 Button(action: completeHabit){
                     Text("Complete Habit")
+                }
+            } else{
+                Button(action: resetHabit){
+                    Text("Reset Habit")
                 }
             }
             
             Spacer()
         }
+        .toolbar{
+            ToolbarItem{
+                NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit)){
+                    Label("Edit habit", systemImage: "gearshape.fill")
+                }
+            }
+        }
     }
     
+    // function to complete the selected habit
     private func completeHabit(){
         withAnimation{
-            selectedHabit.status = "Complete"
+            selectedHabit.completedCountTotal += 1
+            selectedHabit.timesCompletedToday += 1
+            if(selectedHabit.timesCompletedToday == selectedHabit.timesPerDay){
+                selectedHabit.status = "Complete"
+            }
             
             do {
                 try viewContext.save()
@@ -42,6 +71,20 @@ struct HabitDetailView: View {
             } catch {
                 print(error)
             }
+        }
+    }
+    
+    // function to reset the selected habit
+    func resetHabit(){
+        selectedHabit.completedCountTotal -= selectedHabit.timesPerDay
+        selectedHabit.timesCompletedToday = 0
+        selectedHabit.status = "Incomplete"
+        
+        do {
+            try viewContext.save()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            print(error)
         }
     }
     
