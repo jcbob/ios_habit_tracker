@@ -18,6 +18,7 @@ struct AddHabitView: View {
     var body: some View {
         VStack{
             TextField("Add a habit...", text: $habitTitle)
+                .textFieldStyle(.roundedBorder)
                 .font(.system(size: 50))
                 .focused($titleFocus)
                 .submitLabel(.return)
@@ -25,6 +26,7 @@ struct AddHabitView: View {
                 .padding()
                 .padding(.top, 150)
                 .onAppear{DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){titleFocus = true}}
+                .disableAutocorrection(true)
             
             Spacer()
             
