@@ -12,7 +12,8 @@ My first take on a personal project - a habit tracker app for apple
 - description/information
 - completedCountTotal
 - icon
-- color(?)
+- color
+- dateAdded
 
 ## Features
 

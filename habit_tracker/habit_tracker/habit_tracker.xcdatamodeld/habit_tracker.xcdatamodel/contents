@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="DateReference" representedClassName="DateReference" syncable="YES">
+    <entity name="DateReference" representedClassName="DateReference" syncable="YES" codeGenerationType="category">
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="717069840" usesScalarValueType="NO"/>
     </entity>
-    <entity name="Habit" representedClassName="Habit" syncable="YES">
+    <entity name="Habit" representedClassName="Habit" syncable="YES" codeGenerationType="category">
         <attribute name="completedCountTotal" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="icon" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="information" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="status" attributeType="String" defaultValueString="Incomplete"/>

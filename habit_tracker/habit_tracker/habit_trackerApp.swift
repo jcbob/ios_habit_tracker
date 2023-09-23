@@ -15,6 +15,7 @@ struct habit_trackerApp: App {
         WindowGroup {
             HabitListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .preferredColorScheme(.dark)
         }
     }
 }

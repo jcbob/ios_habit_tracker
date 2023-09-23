@@ -8,13 +8,6 @@
 import SwiftUI
 import CoreData
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
 struct HabitListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -65,7 +58,7 @@ struct HabitListView: View {
                                                     }, label: {
                                                         Image(systemName: "checkmark.circle.fill")
                                                     })
-                                                    .tint(.mint)
+                                                    .tint(.green)
                                                 }
                                                 else{
                                                     Button(action: {resetSelectedHabit(habit: listedHabit)
@@ -166,7 +159,6 @@ struct HabitListView: View {
             let habits = try viewContext.fetch(fetchRequest)
             
             for habit in habits{
-                habit.completedCountTotal -= habit.timesPerDay
                 habit.timesCompletedToday = 0
                 habit.status = "Incomplete"
             }
