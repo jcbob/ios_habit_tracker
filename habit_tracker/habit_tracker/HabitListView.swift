@@ -8,6 +8,14 @@
 import SwiftUI
 import CoreData
 
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEEE"
+    return formatter
+}()
+
+
+
 struct HabitListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -30,73 +38,76 @@ struct HabitListView: View {
                 ForEach(habits){ section in
                     Section(header: Text(section.id!)){
                         ForEach(section){ listedHabit in
-                            ZStack{
-                                HStack(alignment: .center){
-                                    // habit icon
-                                    Text("ICON")
-                                    
-                                    VStack(alignment: .leading){
-                                        // habit title
-                                        Text(listedHabit.title!)
-                                            .font(.headline)
-                                            .lineLimit(2)
-                                            .onReceive(timer){_ in
-                                                createDateReference()
-                                                if(newDayReset()){
-                                                    resetAllHabits()
-                                                    dateReferences[0].date = Date.now
-                                                    do{
-                                                        try viewContext.save()
-                                                    } catch{
-                                                        print(error)
+                            ForEach(listedHabit.weekDays!, id: \.self){index in
+                                if(index == dateFormatter.string(from: Date.now)){
+                                    ZStack{
+                                        HStack(alignment: .center){
+                                            // habit icon
+                                            Text("ICON")
+                                            
+                                            VStack(alignment: .leading){
+                                                // habit title
+                                                Text(listedHabit.title!)
+                                                    .font(.headline)
+                                                    .lineLimit(2)
+                                                    .onReceive(timer){_ in
+                                                        createDateReference()
+                                                        if(newDayReset()){
+                                                            resetAllHabits()
+                                                            dateReferences[0].date = Date.now
+                                                            do{
+                                                                try viewContext.save()
+                                                            } catch{
+                                                                print(error)
+                                                            }
+                                                        }
                                                     }
+                                                    .swipeActions(edge: .leading, content: {
+                                                        if(listedHabit.status == "Incomplete"){
+                                                            Button(action: {completeHabit(habit: listedHabit)
+                                                            }, label: {
+                                                                Image(systemName: "checkmark.circle.fill")
+                                                            })
+                                                            .tint(.green)
+                                                        }
+                                                        else{
+                                                            Button(action: {resetSelectedHabit(habit: listedHabit)
+                                                            }, label: {
+                                                                Image(systemName: "x.circle.fill")
+                                                            })
+                                                            .tint(.indigo)
+                                                        }
+                                                    })
+                                                    .swipeActions(edge: .trailing, content: {
+                                                        Button(role: .destructive, action: {deleteHabit(habit: listedHabit)
+                                                        }, label: {
+                                                            Image(systemName: "trash")
+                                                        })
+                                                    })
+                                                
+                                                // habit description
+                                                if(!listedHabit.information!.isEmpty){
+                                                    Text(listedHabit.information!)
+                                                        .multilineTextAlignment(.leading)
+                                                        .font(.footnote)
+                                                        .foregroundColor(.secondary)
+                                                        .lineLimit(1)
                                                 }
                                             }
-                                            .swipeActions(edge: .leading, content: {
-                                                if(listedHabit.status == "Incomplete"){
-                                                    Button(action: {completeHabit(habit: listedHabit)
-                                                    }, label: {
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                    })
-                                                    .tint(.green)
-                                                }
-                                                else{
-                                                    Button(action: {resetSelectedHabit(habit: listedHabit)
-                                                    }, label: {
-                                                        Image(systemName: "x.circle.fill")
-                                                    })
-                                                    .tint(.indigo)
-                                                }
-                                            })
-                                            .swipeActions(edge: .trailing, content: {
-                                                Button(role: .destructive, action: {deleteHabit(habit: listedHabit)
-                                                }, label: {
-                                                    Image(systemName: "trash")
-                                                })
-                                            })
-                                        
-                                        // habit description
-                                        if(!listedHabit.information!.isEmpty){
-                                            Text(listedHabit.information!)
-                                                .multilineTextAlignment(.leading)
-                                                .font(.footnote)
-                                                .foregroundColor(.secondary)
-                                                .lineLimit(1)
+                                            
+                                            Spacer()
+                                            
+                                            // habit timesPerDay count
+                                            Text("\(listedHabit.timesCompletedToday) / \(listedHabit.timesPerDay)")
                                         }
+                                        
+                                        NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
+                                            EmptyView()
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                        .opacity(0)
                                     }
-                                    
-                                    Spacer()
-                                    
-                                    // habit timesPerDay count
-                                    Text("\(listedHabit.timesCompletedToday) / \(listedHabit.timesPerDay)")
                                 }
-                                
-                                NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
-                                    EmptyView()
-                                    
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                .opacity(0)
                             }
                         }
                         .frame(minHeight: 50, maxHeight: 50)
@@ -202,5 +213,6 @@ struct HabitListView: View {
 struct HabitListView_Previews: PreviewProvider {
     static var previews: some View {
         HabitListView()
+            .preferredColorScheme(.dark)
     }
 }

@@ -1,5 +1,5 @@
 # ios_habit_tracker
-My first take on a personal project - a habit tracker app for apple
+My first take on a personal project - a habit tracker app for iOS
 ---
 
 # Habit Tracker
@@ -13,7 +13,7 @@ My first take on a personal project - a habit tracker app for apple
 - completedCountTotal
 - icon
 - color
-- dateAdded
+- weekDays(?)
 
 ## Features
 

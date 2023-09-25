@@ -9,52 +9,118 @@ import SwiftUI
 
 struct AddHabitView: View {
     
+    let layout = [
+        GridItem(.fixed(30))
+    ]
+    
     @State var habitTitle: String = ""
     @State var habitDescription: String = ""
     @State var habitTimesPerDay: String = "1"
+    @State var habitColor: String = "IDColor 1"
+    @State var habitWeekDays: [String] = []
     @FocusState var titleFocus: Bool
     
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack{
-            // textfield to enter habits title
-            TextField("Add a habit...", text: $habitTitle)
-                .textFieldStyle(.roundedBorder)
-                .font(.system(size: 50))
-                .focused($titleFocus)
-                .padding()
-                .padding(.top, 150)
-                .onAppear{DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){titleFocus = true}}
-                .disableAutocorrection(true)
-            
-            // textfield to enter habits description
-            TextField("Add habit description...", text: $habitDescription)
-                .textFieldStyle(.roundedBorder)
-                .padding()
-                .disableAutocorrection(true)
-            
-            // textfield to enter the number of times the habit should be completed
-            HStack(alignment: .center){
-                TextField("1", text: $habitTimesPerDay)
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
+        NavigationView{
+            VStack(spacing: 32){
+                // MARK: textfield to enter habit title
+                TextField("Title...", text: $habitTitle)
+                    .font(.title)
+                    .padding(.horizontal)
+                    .padding(.vertical,10)
+                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .focused($titleFocus)
+                    .onAppear{DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){titleFocus = true}}
                     .disableAutocorrection(true)
-                    .frame(maxWidth: 55)
                 
-                Text("/ Day")
+                // MARK: textfield to enter habit description
+                TextField("Description...", text: $habitDescription)
+                    .font(.body)
+                    .padding(.horizontal)
+                    .padding(.vertical,10)
+                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .disableAutocorrection(true)
+                
+                
+                // MARK: habit color picker
+                ScrollView(.horizontal){
+                    LazyHGrid(rows: layout){
+                        ForEach(1..<12){index in
+                            let color = "IDColor \(index)"
+                            Circle()
+                                .fill(Color(color))
+                                .frame(width:30, height: 30)
+                                .overlay(content: {
+                                    if(color == habitColor){
+                                        Image(systemName: "checkmark")
+                                            .font(.callout.bold())
+                                            //.foregroundColor(Color.blue)
+                                    }
+                                })
+                                .onTapGesture {
+                                    withAnimation{
+                                        habitColor = color
+                                    }
+                                }
+                        }
+                    }
+                }
+                
+                // MARK: week day selector
+                // THIS HAS TO BE SELECTED!!!
+                let weekDays = Calendar.current.weekdaySymbols
+                HStack(spacing: 10){
+                    ForEach(weekDays, id: \.self){day in
+                        let index = habitWeekDays.firstIndex{value in
+                            return value == day
+                        } ?? -1
+                        
+                        Text(day.prefix(3))
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(index != -1 ? Color(habitColor) : Color("TextFieldBackground").opacity(0.5))
+                            }
+                            .onTapGesture {
+                                withAnimation{
+                                    if index != -1{
+                                        habitWeekDays.remove(at: index)
+                                    }else{
+                                        habitWeekDays.append(day)
+                                    }
+                                }
+                            }
+                    }
+                }
+                
+                // MARK: textfield to enter the number of times the habit should be completed
+                HStack(alignment: .center){
+                    TextField("1", text: $habitTimesPerDay)
+                        .textFieldStyle(.roundedBorder)
+                        .disableAutocorrection(true)
+                        .frame(maxWidth: 25)
+                    
+                    Text("/   Day")
+                }
+                
+                
+                Spacer()
+                
+                Button(action: addHabit){
+                    Text("Add to list")
+                }
+                .font(.system(size:40))
+                
+                Spacer()
             }
-            
-            
-            Spacer()
-            
-            Button(action: addHabit){
-                Text("Add to list")
-            }
-            .font(.system(size:40))
-            
-            Spacer()
+            .frame(maxHeight: .infinity, alignment: .top)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Add habit")
         }
     }
     
@@ -65,6 +131,7 @@ struct AddHabitView: View {
             newHabit.information = habitDescription
             newHabit.timesPerDay = Int64(habitTimesPerDay)!
             newHabit.status = "Incomplete"
+            newHabit.weekDays = habitWeekDays
             
             do {
                 try viewContext.save()
@@ -78,8 +145,7 @@ struct AddHabitView: View {
 
 struct AddHabitView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView{
             AddHabitView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        }
+                .preferredColorScheme(.dark)
     }
 }
