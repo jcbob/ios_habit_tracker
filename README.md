@@ -20,9 +20,10 @@ My first take on a personal project - a habit tracker app for iOS
 
 ### General
 [x] when a new day begins reset all habits' status to "Incomplete"
+[ ] make a separate tab view for managing all habits (unaffected by the weekday)
 
 
-### List view for all the habits
+### **HabitListView**:
 [x] divide the finished and unfinished habits
 [x] if the habit doesn't have a description center the habit title
 [ ] add swiping functionality to complete habits
@@ -32,7 +33,7 @@ My first take on a personal project - a habit tracker app for iOS
 [ ] show habit icon to the left of the habit list element
 [ ] add some UI designs using habit colour attribute (when incomplete the habit background colour is faded, when complete, the colour is vibrant)
 
-### Add new habit
+### **AddHabitView**:
 [x] button to add to list
 [x] textfield to add habit descripiton
 [x] textfield to add completion per day goal
@@ -42,7 +43,7 @@ My first take on a personal project - a habit tracker app for iOS
 [ ] grid view with buttons to pick an icon associated with the habit  
 
 
-### Habit detail view
+### **HabitDetailView**:
 [x] habit title content
 [x] button to complete habit
 [x] button to edit habit
@@ -52,7 +53,7 @@ My first take on a personal project - a habit tracker app for iOS
 [ ] show habit colour
 [ ] show habit week day information
 
-### Edit habit view
+### **EditHabitView**:
 [x] change habit title
 [x] change habit description
 [x] change habit timesPerDay
