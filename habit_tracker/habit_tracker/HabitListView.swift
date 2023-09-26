@@ -68,7 +68,7 @@ struct HabitListView: View {
                                                             }, label: {
                                                                 Image(systemName: "checkmark.circle.fill")
                                                             })
-                                                            .tint(.green)
+                                                            .tint(Color(listedHabit.color))
                                                         }
                                                         else{
                                                             Button(action: {resetSelectedHabit(habit: listedHabit)

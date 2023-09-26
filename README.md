@@ -1,39 +1,42 @@
-# ios_habit_tracker
+# Habit Tracker
 My first take on a personal project - a habit tracker app for iOS
 ---
 
-# Habit Tracker
-
 ## Habit class properties
-- title
-- status
-- timesPerDay
-- timesCompletedToday
-- description/information
-- completedCountTotal
-- icon
-- color
-- weekDays
+- title: String
+- status: String
+- timesPerDay: Int
+- timesCompletedToday: Int
+- description/information: String
+- completedCountTotal: Int
+- icon: ?
+- color: String
+- weekDays: [String]
+
 
 ## Features
 
+### Stuff to do:
+[ ] create some sort of grid view (ZStack or newView) in AddHabitView for picking out an icon
+[ ] implement all the possible habit property changes in EditHabitView
 
-### General
+
+### General:
 [x] when a new day begins reset all habits' status to "Incomplete"
-[ ] make a separate tab view for managing all habits (unaffected by the weekday)
+[x] make a separate tab view for managing all habits (unaffected by the weekday)
 
 
-### **HabitListView**:
+### **Habit List View**:
 [x] divide the finished and unfinished habits
 [x] if the habit doesn't have a description center the habit title
-[ ] add swiping functionality to complete habits
 [x] show only habits active that specific week day
 [x] show how many times a habit has to be swiped to be completed (ex. "0/2")
 [x] show habit description under title
+[ ] add swiping functionality to complete habits
 [ ] show habit icon to the left of the habit list element
 [ ] add some UI designs using habit colour attribute (when incomplete the habit background colour is faded, when complete, the colour is vibrant)
 
-### **AddHabitView**:
+### **Add Habit View**:
 [x] button to add to list
 [x] textfield to add habit descripiton
 [x] textfield to add completion per day goal
@@ -43,7 +46,7 @@ My first take on a personal project - a habit tracker app for iOS
 [ ] grid view with buttons to pick an icon associated with the habit  
 
 
-### **HabitDetailView**:
+### **Habit Detail View**:
 [x] habit title content
 [x] button to complete habit
 [x] button to edit habit
@@ -53,12 +56,15 @@ My first take on a personal project - a habit tracker app for iOS
 [ ] show habit colour
 [ ] show habit week day information
 
-### **EditHabitView**:
+### **Edit Habit View**:
 [x] change habit title
 [x] change habit description
 [x] change habit timesPerDay
-[ ] change habit colour
-[ ] change habit week day
-[ ] change habit icon
+[x] change habit colour
+[x] change habit week day
+[x] change habit icon
 
+### **Habit Manager View**:
+[x] create the view
+[x] make a button instead of a navigationLink to edit the habit
 

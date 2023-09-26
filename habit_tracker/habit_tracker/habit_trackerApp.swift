@@ -13,7 +13,7 @@ struct habit_trackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HabitListView()
+            MainView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .preferredColorScheme(.dark)
         }

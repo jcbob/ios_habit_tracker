@@ -16,29 +16,33 @@ struct HabitDetailView: View {
     
     var body: some View {
         VStack{
-            // show the habits title
+            // MARK: show the habits title
             Text(selectedHabit.title!)
                 .font(.system(size: 50))
                 .padding(.top, 150)
             
             Spacer()
             
-            // show the habits description
+            // MARK: show the habits description
             Text(selectedHabit.information!)
                 .foregroundColor(.secondary)
                 .background(.secondary)
                 .padding(.bottom, 16)
             
-            // show the number of times the habit has been completed / number of times the habit should be completed
+            // MARK: show the number of times the habit has been completed / number of times the habit should be completed
             Text("\(selectedHabit.timesCompletedToday) / \(selectedHabit.timesPerDay)")
                 .padding(.bottom, 16)
             
-            // show the habits total completion count
+            // MARK: show the habits total completion count
             Text("Completed this habit a total of \(selectedHabit.completedCountTotal) times")
+            
+            //MARK: show on which days the habit is active
+            
+            
             
             Spacer()
             
-            // show a button to complete/reset a habit
+            // MARK: show a button to complete/reset a habit
             if (selectedHabit.status == "Incomplete"){
                 Button(action: completeHabit){
                     Text("Complete Habit")
@@ -53,11 +57,12 @@ struct HabitDetailView: View {
         }
         .toolbar{
             ToolbarItem{
-                NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit)){
+                NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit, habitColor: selectedHabit.color ?? "IDColor 1", habitWeekDays: selectedHabit.weekDays ?? Calendar.current.weekdaySymbols)){
                     Label("Edit habit", systemImage: "gearshape.fill")
                 }
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
     
     // function to complete the selected habit

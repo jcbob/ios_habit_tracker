@@ -17,7 +17,7 @@ struct AddHabitView: View {
     @State var habitDescription: String = ""
     @State var habitTimesPerDay: String = "1"
     @State var habitColor: String = "IDColor 1"
-    @State var habitWeekDays: [String] = []
+    @State var habitWeekDays: [String] = Calendar.current.weekdaySymbols
     @FocusState var titleFocus: Bool
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -70,7 +70,6 @@ struct AddHabitView: View {
                 }
                 
                 // MARK: week day selector
-                // THIS HAS TO BE SELECTED!!!
                 let weekDays = Calendar.current.weekdaySymbols
                 HStack(spacing: 10){
                     ForEach(weekDays, id: \.self){day in
@@ -122,15 +121,16 @@ struct AddHabitView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Add habit")
         }
+        .toolbar(.hidden, for: .tabBar)
     }
     
     func addHabit() {
         withAnimation {
             let newHabit = Habit(context: viewContext)
+            newHabit.status = "Incomplete"
             newHabit.title = habitTitle
             newHabit.information = habitDescription
             newHabit.timesPerDay = Int64(habitTimesPerDay)!
-            newHabit.status = "Incomplete"
             newHabit.weekDays = habitWeekDays
             
             do {
