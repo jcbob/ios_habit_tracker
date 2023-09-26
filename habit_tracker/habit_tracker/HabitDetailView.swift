@@ -14,43 +14,89 @@ struct HabitDetailView: View {
     
     var selectedHabit: Habit
     
+    @ViewBuilder
     var body: some View {
-        VStack{
-            // MARK: show the habits title
-            Text(selectedHabit.title!)
-                .font(.system(size: 50))
-                .padding(.top, 150)
+        VStack(spacing: 32){
             
             Spacer()
             
-            // MARK: show the habits description
-            Text(selectedHabit.information!)
-                .foregroundColor(.secondary)
-                .background(.secondary)
-                .padding(.bottom, 16)
+            // MARK: show the habits title
+            Text(selectedHabit.title!)
+                .font(.title)
+                .padding(.horizontal)
+                .padding(.vertical,10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
             
-            // MARK: show the number of times the habit has been completed / number of times the habit should be completed
-            Text("\(selectedHabit.timesCompletedToday) / \(selectedHabit.timesPerDay)")
-                .padding(.bottom, 16)
+            // MARK: show the habits description
+            if(!selectedHabit.information!.isEmpty){
+                Text(selectedHabit.information!)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+                    .padding(.vertical,10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
+            }
             
             // MARK: show the habits total completion count
             Text("Completed this habit a total of \(selectedHabit.completedCountTotal) times")
+                .padding(.horizontal)
+                .padding(.vertical,10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
             
             //MARK: show on which days the habit is active
-            
+            let weekDays = Calendar.current.weekdaySymbols
+            VStack(alignment: .leading){
+                Text("Active days:")
+                HStack(spacing: 10){
+                    ForEach(weekDays, id: \.self){day in
+                        Text(day.prefix(2))
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(selectedHabit.weekDays!.contains(day) ? Color(selectedHabit.color ?? "IDColor 1") : Color("TextFieldBackground"))
+                            }
+                    }
+                }
+            }
+            .padding(.top, 50)
             
             
             Spacer()
+            
+            // MARK: show the number of times the habit has been completed / number of times the habit should be completed
+            Text("\(selectedHabit.timesCompletedToday) / \(selectedHabit.timesPerDay)")
+                .padding(7.5)
+                .font(.largeTitle)
+                .background(Color(.black).opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .disableAutocorrection(true)
             
             // MARK: show a button to complete/reset a habit
             if (selectedHabit.status == "Incomplete"){
                 Button(action: completeHabit){
+                    Image(systemName: "checkmark.circle.fill")
                     Text("Complete Habit")
                 }
+                .padding()
+                .background{
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(selectedHabit.color ?? "IDColor 1"))
+                }
+                .font(.system(size:25))
             } else{
                 Button(action: resetHabit){
+                    Image(systemName: "gobackward")
                     Text("Reset Habit")
                 }
+                .padding()
+                .background{
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(selectedHabit.color ?? "IDColor 1"))
+                }
+                .font(.system(size:25))
             }
             
             Spacer()

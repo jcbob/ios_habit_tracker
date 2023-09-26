@@ -41,6 +41,7 @@ struct HabitListView: View {
                             ForEach(listedHabit.weekDays!, id: \.self){index in
                                 if(index == dateFormatter.string(from: Date.now)){
                                     ZStack{
+                                        
                                         HStack(alignment: .center){
                                             // habit icon
                                             Text("ICON")
@@ -50,40 +51,6 @@ struct HabitListView: View {
                                                 Text(listedHabit.title!)
                                                     .font(.headline)
                                                     .lineLimit(2)
-                                                    .onReceive(timer){_ in
-                                                        createDateReference()
-                                                        if(newDayReset()){
-                                                            resetAllHabits()
-                                                            dateReferences[0].date = Date.now
-                                                            do{
-                                                                try viewContext.save()
-                                                            } catch{
-                                                                print(error)
-                                                            }
-                                                        }
-                                                    }
-                                                    .swipeActions(edge: .leading, content: {
-                                                        if(listedHabit.status == "Incomplete"){
-                                                            Button(action: {completeHabit(habit: listedHabit)
-                                                            }, label: {
-                                                                Image(systemName: "checkmark.circle.fill")
-                                                            })
-                                                            .tint(Color(listedHabit.color))
-                                                        }
-                                                        else{
-                                                            Button(action: {resetSelectedHabit(habit: listedHabit)
-                                                            }, label: {
-                                                                Image(systemName: "x.circle.fill")
-                                                            })
-                                                            .tint(.indigo)
-                                                        }
-                                                    })
-                                                    .swipeActions(edge: .trailing, content: {
-                                                        Button(role: .destructive, action: {deleteHabit(habit: listedHabit)
-                                                        }, label: {
-                                                            Image(systemName: "trash")
-                                                        })
-                                                    })
                                                 
                                                 // habit description
                                                 if(!listedHabit.information!.isEmpty){
@@ -106,7 +73,37 @@ struct HabitListView: View {
                                         }
                                         .buttonStyle(PlainButtonStyle())
                                         .opacity(0)
+                                        
+                                    } // MARK: end of ZStack
+                                    .onReceive(timer){_ in
+                                        createDateReference()
+                                        if(newDayReset()){
+                                            resetAllHabits()
+                                            updateDateReference()
+                                        }
                                     }
+                                    .swipeActions(edge: .leading, content: {
+                                        if(listedHabit.status == "Incomplete"){
+                                            Button(action: {completeHabit(habit: listedHabit)
+                                            }, label: {
+                                                Image(systemName: "checkmark.circle.fill")
+                                            })
+                                            .tint(Color(listedHabit.color ?? "IDColor 1"))
+                                        }
+                                        else{
+                                            Button(action: {resetSelectedHabit(habit: listedHabit)
+                                            }, label: {
+                                                Image(systemName: "gobackward")
+                                            })
+                                            .tint(.indigo)
+                                        }
+                                    })
+                                    .swipeActions(edge: .trailing, content: {
+                                        Button(role: .destructive, action: {deleteHabit(habit: listedHabit)
+                                        }, label: {
+                                            Image(systemName: "trash")
+                                        })
+                                    })
                                 }
                             }
                         }
@@ -115,6 +112,7 @@ struct HabitListView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Habit Tracker")
             .toolbar{
                 ToolbarItem{
@@ -206,6 +204,15 @@ struct HabitListView: View {
             } catch{
                 print(error)
             }
+        }
+    }
+    
+    func updateDateReference(){
+        dateReferences[0].date = Date.now
+        do{
+            try viewContext.save()
+        } catch{
+            print(error)
         }
     }
 }

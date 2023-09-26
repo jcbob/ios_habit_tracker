@@ -26,6 +26,7 @@ struct AddHabitView: View {
     var body: some View {
         NavigationView{
             VStack(spacing: 32){
+                
                 // MARK: textfield to enter habit title
                 TextField("Title...", text: $habitTitle)
                     .font(.title)
@@ -38,12 +39,21 @@ struct AddHabitView: View {
                 
                 // MARK: textfield to enter habit description
                 TextField("Description...", text: $habitDescription)
-                    .font(.body)
                     .padding(.horizontal)
                     .padding(.vertical,10)
                     .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                     .disableAutocorrection(true)
                 
+                // MARK: textfield to enter the number of times the habit should be completed
+                HStack(alignment: .center){
+                    TextField("1", text: $habitTimesPerDay)
+                        .padding(7.5)
+                        .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        .disableAutocorrection(true)
+                        .frame(maxWidth: 35)
+                    
+                    Text("/   Day")
+                }
                 
                 // MARK: habit color picker
                 ScrollView(.horizontal){
@@ -77,7 +87,7 @@ struct AddHabitView: View {
                             return value == day
                         } ?? -1
                         
-                        Text(day.prefix(3))
+                        Text(day.prefix(2))
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical)
@@ -97,23 +107,18 @@ struct AddHabitView: View {
                     }
                 }
                 
-                // MARK: textfield to enter the number of times the habit should be completed
-                HStack(alignment: .center){
-                    TextField("1", text: $habitTimesPerDay)
-                        .textFieldStyle(.roundedBorder)
-                        .disableAutocorrection(true)
-                        .frame(maxWidth: 25)
-                    
-                    Text("/   Day")
-                }
-                
-                
                 Spacer()
                 
                 Button(action: addHabit){
                     Text("Add to list")
                 }
-                .font(.system(size:40))
+                .padding()
+                .background{
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(habitColor))
+                        .shadow(color: Color(habitColor), radius: 60)
+                }
+                .font(.system(size:30))
                 
                 Spacer()
             }

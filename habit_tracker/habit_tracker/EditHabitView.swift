@@ -27,43 +27,51 @@ struct EditHabitView: View {
     
     
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading, spacing: 32){
             
             // MARK: change habit title
-            Text("Habit title:")
-                .padding(.leading, 16)
-            TextField(selectedHabit.title!, text:$habitTitle)
-                .textFieldStyle(.roundedBorder)
-                .padding(16)
-                .submitLabel(.return)
-                .onSubmit {editHabitTitle()}
-                .disableAutocorrection(true)
-                .padding(.bottom, 50)
+            VStack(alignment: .leading){
+                Text("Title:")
+                TextField(selectedHabit.title!, text:$habitTitle)
+                    .font(.title)
+                    .padding(.horizontal)
+                    .padding(.vertical,10)
+                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .submitLabel(.return)
+                    .onSubmit {editHabitTitle()}
+                    .disableAutocorrection(true)
+            }
+            .padding(.top, 32)
+            
             
             // MARK: change habit description
-            Text("Habit description:")
-                .padding(.leading, 16)
-            TextField(selectedHabit.information!, text: $habitDescription)
-                .textFieldStyle(.roundedBorder)
-                .padding(16)
-                .submitLabel(.return)
-                .onSubmit {editHabitDescription()}
-                .disableAutocorrection(true)
-                .padding(.bottom, 50)
+            VStack(alignment: .leading){
+                Text("Description:")
+                TextField(selectedHabit.information!, text: $habitDescription)
+                    .padding(.horizontal)
+                    .padding(.vertical,10)
+                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .disableAutocorrection(true)
+                    .submitLabel(.return)
+                    .onSubmit {editHabitDescription()}
+            }
             
             // MARK: change habit completions per day
-            Text("Habit completions per day:")
-                .padding(.leading, 16)
-            HStack(alignment: .center){
-                TextField("1", text: $habitTimesPerDay)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.leading, 16)
-                    .submitLabel(.return)
-                    .onSubmit {editHabitTimesPerDay()}
-                    .disableAutocorrection(true)
-                    .frame(maxWidth: 55)
-                
-                Text("/ Day")
+            VStack(alignment: .leading){
+                Text("Completions per day:")
+                HStack(alignment: .center){
+                    Spacer()
+                    TextField("1", text: $habitTimesPerDay)
+                        .padding(7.5)
+                        .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        .disableAutocorrection(true)
+                        .frame(maxWidth: 35)
+                        .submitLabel(.return)
+                        .onSubmit {editHabitTimesPerDay()}
+                    
+                    Text("/   Day")
+                    Spacer()
+                }
             }
             
             // MARK: change habit colour
@@ -78,7 +86,7 @@ struct EditHabitView: View {
                                 if(color == habitColor){
                                     Image(systemName: "checkmark")
                                         .font(.callout.bold())
-                                        //.foregroundColor(Color.blue)
+                                    //.foregroundColor(Color.blue)
                                 }
                             })
                             .onTapGesture {
@@ -172,8 +180,8 @@ struct EditHabitView: View {
 }
 
 /*
-struct EditHabitView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditHabitView(selectedHabit: Habit)
-    }
-}*/
+ struct EditHabitView_Previews: PreviewProvider {
+ static var previews: some View {
+ EditHabitView(selectedHabit: Habit)
+ }
+ }*/
