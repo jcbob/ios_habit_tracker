@@ -18,7 +18,7 @@ My first take on a personal project - a habit tracker app for iOS
 
 ### Stuff to do:
 [ ] create some sort of grid view (ZStack or newView) in AddHabitView for picking out an icon
-[ ] implement all the possible habit property changes in EditHabitView
+[x] implement all the possible habit property changes in EditHabitView
 
 
 ### General:
@@ -32,9 +32,9 @@ My first take on a personal project - a habit tracker app for iOS
 [x] show only habits active that specific week day
 [x] show how many times a habit has to be swiped to be completed (ex. "0/2")
 [x] show habit description under title
+[x] add some UI designs using habit colour attribute (when incomplete the habit background colour is faded, when complete, the colour is vibrant)
 [ ] add swiping functionality to complete habits
 [ ] show habit icon to the left of the habit list element
-[ ] add some UI designs using habit colour attribute (when incomplete the habit background colour is faded, when complete, the colour is vibrant)
 
 ### **Add Habit View**:
 [x] button to add to list
@@ -53,8 +53,8 @@ My first take on a personal project - a habit tracker app for iOS
 [x] show habit total completion count
 [x] show habit completion count on that day
 [x] show habit description
-[ ] show habit colour
-[ ] show habit week day information
+[x] show habit colour
+[x] show habit week day information
 
 ### **Edit Habit View**:
 [x] change habit title

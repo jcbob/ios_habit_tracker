@@ -39,6 +39,7 @@ struct HabitManagerView: View {
                                 }
                             }
                         }
+                        .listRowBackground(Color(listedHabit.color!))
                         .swipeActions(edge: .trailing, content: {
                             Button(role: .destructive, action: {deleteHabit(habit: listedHabit)
                             }, label: {
@@ -70,6 +71,8 @@ struct HabitManagerView: View {
                 .frame(maxWidth: 50)
                 .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Habit Manager")
         }
     }
     

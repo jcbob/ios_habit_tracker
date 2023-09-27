@@ -27,111 +27,122 @@ struct EditHabitView: View {
     
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 32){
-            
-            // MARK: change habit title
-            VStack(alignment: .leading){
-                Text("Title:")
-                TextField(selectedHabit.title!, text:$habitTitle)
-                    .font(.title)
-                    .padding(.horizontal)
-                    .padding(.vertical,10)
-                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .submitLabel(.return)
-                    .onSubmit {editHabitTitle()}
-                    .disableAutocorrection(true)
-            }
-            .padding(.top, 32)
-            
-            
-            // MARK: change habit description
-            VStack(alignment: .leading){
-                Text("Description:")
-                TextField(selectedHabit.information!, text: $habitDescription)
-                    .padding(.horizontal)
-                    .padding(.vertical,10)
-                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .disableAutocorrection(true)
-                    .submitLabel(.return)
-                    .onSubmit {editHabitDescription()}
-            }
-            
-            // MARK: change habit completions per day
-            VStack(alignment: .leading){
-                Text("Completions per day:")
-                HStack(alignment: .center){
-                    Spacer()
-                    TextField("1", text: $habitTimesPerDay)
-                        .padding(7.5)
-                        .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                        .disableAutocorrection(true)
-                        .frame(maxWidth: 35)
+        ScrollView{
+            VStack(alignment: .leading, spacing: 32){
+                
+                // MARK: change habit title
+                VStack(alignment: .leading){
+                    Text("Title:")
+                        .fontWeight(.light)
+                        .padding(.leading, 8)
+                    TextField(selectedHabit.title!, text:$habitTitle)
+                        .font(.title)
+                        .fontWeight(.light)
+                        .padding(.horizontal)
+                        .padding(.vertical,10)
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .padding([.leading, .trailing], 8)
                         .submitLabel(.return)
-                        .onSubmit {editHabitTimesPerDay()}
-                    
-                    Text("/   Day")
-                    Spacer()
+                        .onSubmit {editHabitTitle()}
+                        .disableAutocorrection(true)
                 }
-            }
-            
-            // MARK: change habit colour
-            ScrollView(.horizontal){
-                LazyHGrid(rows: layout){
-                    ForEach(1..<12){index in
-                        let color = "IDColor \(index)"
-                        Circle()
-                            .fill(Color(color))
-                            .frame(width:30, height: 30)
-                            .overlay(content: {
-                                if(color == habitColor){
-                                    Image(systemName: "checkmark")
-                                        .font(.callout.bold())
-                                    //.foregroundColor(Color.blue)
+                .padding(.top, 32)
+                
+                
+                // MARK: change habit description
+                VStack(alignment: .leading){
+                    Text("Description:")
+                        .fontWeight(.light)
+                        .padding(.leading, 8)
+                    TextField(selectedHabit.information!, text: $habitDescription)
+                        .padding(.horizontal)
+                        .padding(.vertical,10)
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .padding([.leading, .trailing], 8)
+                        .disableAutocorrection(true)
+                        .submitLabel(.return)
+                        .onSubmit {editHabitDescription()}
+                }
+                
+                // MARK: change habit completions per day
+                VStack(alignment: .leading){
+                    Text("Completions per day:")
+                        .fontWeight(.light)
+                        .padding(.leading, 8)
+                    HStack(alignment: .center){
+                        Spacer()
+                        TextField("1", text: $habitTimesPerDay)
+                            .padding(7.5)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            .disableAutocorrection(true)
+                            .frame(maxWidth: 35)
+                            .submitLabel(.return)
+                            .onSubmit {editHabitTimesPerDay()}
+                        
+                        Text("/   Day")
+                        Spacer()
+                    }
+                }
+                
+                // MARK: change habit colour
+                ScrollView(.horizontal){
+                    LazyHGrid(rows: layout){
+                        ForEach(1..<12){index in
+                            let color = "IDColor \(index)"
+                            Circle()
+                                .fill(Color(color))
+                                .frame(width:30, height: 30)
+                                .overlay(content: {
+                                    if(color == habitColor){
+                                        Image(systemName: "checkmark")
+                                            .font(.callout.bold())
+                                        //.foregroundColor(Color.blue)
+                                    }
+                                })
+                                .onTapGesture {
+                                    withAnimation{
+                                        habitColor = color
+                                        editHabitColor()
+                                    }
                                 }
-                            })
+                        }
+                    }
+                }
+                
+                
+                // MARK: change habit week day frequency
+                let weekDays = Calendar.current.weekdaySymbols
+                HStack(spacing: 10){
+                    ForEach(weekDays, id: \.self){day in
+                        let index = habitWeekDays.firstIndex{value in
+                            return value == day
+                        } ?? -1
+                        Text(day.prefix(2))
+                            .fontWeight(.light)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(index != -1 ? Color(habitColor) : Color("TextFieldBackground").opacity(0.5))
+                            }
                             .onTapGesture {
                                 withAnimation{
-                                    habitColor = color
-                                    editHabitColor()
+                                    if index != -1{
+                                        habitWeekDays.remove(at: index)
+                                        editHabitWeekDays()
+                                    }else{
+                                        habitWeekDays.append(day)
+                                        editHabitWeekDays()
+                                    }
                                 }
                             }
                     }
                 }
+                
+                Spacer()
             }
-            
-            
-            // MARK: change habit week day frequency
-            let weekDays = Calendar.current.weekdaySymbols
-            HStack(spacing: 10){
-                ForEach(weekDays, id: \.self){day in
-                    let index = habitWeekDays.firstIndex{value in
-                        return value == day
-                    } ?? -1
-                    
-                    Text(day.prefix(3))
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical)
-                        .background{
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(index != -1 ? Color(habitColor) : Color("TextFieldBackground").opacity(0.5))
-                        }
-                        .onTapGesture {
-                            withAnimation{
-                                if index != -1{
-                                    habitWeekDays.remove(at: index)
-                                    editHabitWeekDays()
-                                }else{
-                                    habitWeekDays.append(day)
-                                    editHabitWeekDays()
-                                }
-                            }
-                        }
-                }
-            }
-            
-            Spacer()
         }
+        .background(LinearGradient(gradient: Gradient(colors: [Color(selectedHabit.color!).opacity(0.4), .black]), startPoint: .top, endPoint: .bottom))
     }
     func editHabitTitle(){
         selectedHabit.title = habitTitle

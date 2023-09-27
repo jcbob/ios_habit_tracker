@@ -36,23 +36,24 @@ struct HabitListView: View {
         NavigationStack{
             List{
                 ForEach(habits){ section in
-                    Section(header: Text(section.id!)){
+                    Section(){
                         ForEach(section){ listedHabit in
                             ForEach(listedHabit.weekDays!, id: \.self){index in
                                 if(index == dateFormatter.string(from: Date.now)){
                                     ZStack{
                                         
                                         HStack(alignment: .center){
-                                            // habit icon
+                                            // MARK: habit icon
                                             Text("ICON")
                                             
                                             VStack(alignment: .leading){
-                                                // habit title
+                                                // MARK: habit title
                                                 Text(listedHabit.title!)
                                                     .font(.headline)
+                                                    .fontWeight(.light)
                                                     .lineLimit(2)
                                                 
-                                                // habit description
+                                                // MARK: habit description
                                                 if(!listedHabit.information!.isEmpty){
                                                     Text(listedHabit.information!)
                                                         .multilineTextAlignment(.leading)
@@ -64,7 +65,7 @@ struct HabitListView: View {
                                             
                                             Spacer()
                                             
-                                            // habit timesPerDay count
+                                            // MARK: habit timesPerDay count
                                             Text("\(listedHabit.timesCompletedToday) / \(listedHabit.timesPerDay)")
                                         }
                                         
@@ -74,7 +75,8 @@ struct HabitListView: View {
                                         .buttonStyle(PlainButtonStyle())
                                         .opacity(0)
                                         
-                                    } // MARK: end of ZStack
+                                    }
+                                    .listRowBackground(listedHabit.status != "Complete" ? Color(listedHabit.color!).opacity(0.2) : Color(listedHabit.color!))
                                     .onReceive(timer){_ in
                                         createDateReference()
                                         if(newDayReset()){
@@ -88,7 +90,7 @@ struct HabitListView: View {
                                             }, label: {
                                                 Image(systemName: "checkmark.circle.fill")
                                             })
-                                            .tint(Color(listedHabit.color ?? "IDColor 1"))
+                                            .tint(Color(listedHabit.color!))
                                         }
                                         else{
                                             Button(action: {resetSelectedHabit(habit: listedHabit)

@@ -23,10 +23,11 @@ struct HabitDetailView: View {
             // MARK: show the habits title
             Text(selectedHabit.title!)
                 .font(.title)
+                .fontWeight(.light)
                 .padding(.horizontal)
                 .padding(.vertical,10)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 0, style: .continuous))
             
             // MARK: show the habits description
             if(!selectedHabit.information!.isEmpty){
@@ -35,11 +36,12 @@ struct HabitDetailView: View {
                     .padding(.horizontal)
                     .padding(.vertical,10)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 0, style: .continuous))
             }
             
             // MARK: show the habits total completion count
             Text("Completed this habit a total of \(selectedHabit.completedCountTotal) times")
+                .fontWeight(.light)
                 .padding(.horizontal)
                 .padding(.vertical,10)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -49,10 +51,12 @@ struct HabitDetailView: View {
             let weekDays = Calendar.current.weekdaySymbols
             VStack(alignment: .leading){
                 Text("Active days:")
+                    .fontWeight(.light)
+                    .padding(.leading, 8)
                 HStack(spacing: 10){
                     ForEach(weekDays, id: \.self){day in
                         Text(day.prefix(2))
-                            .fontWeight(.semibold)
+                            .fontWeight(.light)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical)
                             .background{
@@ -83,7 +87,7 @@ struct HabitDetailView: View {
                 .padding()
                 .background{
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(Color(selectedHabit.color ?? "IDColor 1"))
+                        .fill(Color(selectedHabit.color!))
                 }
                 .font(.system(size:25))
             } else{
@@ -94,17 +98,19 @@ struct HabitDetailView: View {
                 .padding()
                 .background{
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(Color(selectedHabit.color ?? "IDColor 1"))
+                        .fill(Color(selectedHabit.color!))
                 }
                 .font(.system(size:25))
             }
             
             Spacer()
         }
+        .background(LinearGradient(gradient: Gradient(colors: [Color(selectedHabit.color!).opacity(0.4), .black]), startPoint: .top, endPoint: .bottom))
         .toolbar{
             ToolbarItem{
                 NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit, habitColor: selectedHabit.color ?? "IDColor 1", habitWeekDays: selectedHabit.weekDays ?? Calendar.current.weekdaySymbols)){
                     Label("Edit habit", systemImage: "gearshape.fill")
+                        .accentColor(Color(selectedHabit.color!))
                 }
             }
         }
