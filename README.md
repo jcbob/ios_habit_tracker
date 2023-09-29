@@ -1,6 +1,6 @@
 # Habit Tracker
-My first take on a personal project - a habit tracker app for iOS
 ---
+My first take on a personal project - a habit tracker app for iOS
 
 ## Habit class properties
 - title: String
@@ -80,3 +80,12 @@ My first take on a personal project - a habit tracker app for iOS
 - [x] create the view
 - [x] make a button instead of a navigationLink to edit the habit
 
+## Problems & Bugs
+---
+
+### Unverified
+
+### Verified
+- [ ] Edit button in Habit Manager doesn't work after adding a new habit
+
+### Fixed
