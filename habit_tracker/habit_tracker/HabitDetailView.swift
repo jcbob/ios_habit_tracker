@@ -47,6 +47,18 @@ struct HabitDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color("TextFieldBackground").opacity(0.5), in: RoundedRectangle(cornerRadius: 0, style: .continuous))
             
+            
+            //MARK: show habit icon
+            ZStack{
+                Text("")
+                    .frame(width: 60, height: 60)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                
+                Image(icons[Int(selectedHabit.icon)])
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .padding(.bottom, -62)
+            
             //MARK: show on which days the habit is active
             let weekDays = Calendar.current.weekdaySymbols
             VStack(alignment: .leading){
@@ -108,7 +120,7 @@ struct HabitDetailView: View {
         .background(LinearGradient(gradient: Gradient(colors: [Color(selectedHabit.color!).opacity(0.4), .black]), startPoint: .top, endPoint: .bottom))
         .toolbar{
             ToolbarItem{
-                NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit, habitColor: selectedHabit.color ?? "IDColor 1", habitWeekDays: selectedHabit.weekDays ?? Calendar.current.weekdaySymbols)){
+                NavigationLink(destination: EditHabitView(selectedHabit: selectedHabit, habitIcon: selectedHabit.icon, habitColor: selectedHabit.color!, habitWeekDays: selectedHabit.weekDays ?? Calendar.current.weekdaySymbols)){
                     Label("Edit habit", systemImage: "gearshape.fill")
                         .accentColor(Color(selectedHabit.color!))
                 }
@@ -117,7 +129,7 @@ struct HabitDetailView: View {
         .toolbar(.hidden, for: .tabBar)
     }
     
-    // function to complete the selected habit
+    // MARK: function to complete the selected habit
     private func completeHabit(){
         withAnimation{
             selectedHabit.completedCountTotal += 1

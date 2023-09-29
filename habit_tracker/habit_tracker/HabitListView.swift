@@ -14,19 +14,17 @@ private let dateFormatter: DateFormatter = {
     return formatter
 }()
 
-
-
 struct HabitListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Habit.title, ascending: true)], animation: .default)
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Habit.userOrder, ascending: true)], animation: .default)
     private var habitsUnsectioned: FetchedResults<Habit>
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \DateReference.date, ascending: true)], animation: .default)
     private var dateReferences: FetchedResults<DateReference>
     
-    @SectionedFetchRequest<String?, Habit>(sectionIdentifier: \Habit.status, sortDescriptors: [SortDescriptor(\Habit.status, order: .reverse), SortDescriptor(\Habit.title)], animation: .default)
+    @SectionedFetchRequest<String?, Habit>(sectionIdentifier: \Habit.status, sortDescriptors: [SortDescriptor(\Habit.status, order: .reverse), SortDescriptor(\Habit.userOrder)], animation: .default)
     private var habits: SectionedFetchResults<String?, Habit>
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -43,8 +41,10 @@ struct HabitListView: View {
                                     ZStack{
                                         
                                         HStack(alignment: .center){
+                                            
                                             // MARK: habit icon
-                                            Text("ICON")
+                                            Image(icons[Int(listedHabit.icon)])
+                                                .padding(.leading, -12)
                                             
                                             VStack(alignment: .leading){
                                                 // MARK: habit title
@@ -72,7 +72,7 @@ struct HabitListView: View {
                                         NavigationLink(destination: HabitDetailView(selectedHabit: listedHabit)){
                                             EmptyView()
                                         }
-                                        .buttonStyle(PlainButtonStyle())
+                                        //.buttonStyle(PlainButtonStyle())
                                         .opacity(0)
                                         
                                     }
@@ -127,7 +127,12 @@ struct HabitListView: View {
     }
     
     public func deleteHabit(habit: Habit){
+        var i = habitsUnsectioned.firstIndex(where: {$0 == habit})!
         viewContext.delete(habit)
+        while i <= habitsUnsectioned.count - 1{
+            habitsUnsectioned[i].userOrder = habitsUnsectioned[i].userOrder - 1
+            i = i + 1
+        }
         do{
             try viewContext.save()
         } catch{

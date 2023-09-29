@@ -22,13 +22,15 @@ struct EditHabitView: View {
     @State private var habitTitle: String = ""
     @State private var habitDescription: String = ""
     @State var habitTimesPerDay = ""
+    @State var habitIcon: Int64
     @State var habitColor: String = "IDColor 1"
     @State var habitWeekDays: [String] = Calendar.current.weekdaySymbols
     
+    @State var showingSheet: Bool = false
     
     var body: some View {
         ScrollView{
-            VStack(alignment: .leading, spacing: 32){
+            VStack(spacing: 50){
                 
                 // MARK: change habit title
                 VStack(alignment: .leading){
@@ -46,7 +48,6 @@ struct EditHabitView: View {
                         .onSubmit {editHabitTitle()}
                         .disableAutocorrection(true)
                 }
-                .padding(.top, 32)
                 
                 
                 // MARK: change habit description
@@ -65,13 +66,12 @@ struct EditHabitView: View {
                 }
                 
                 // MARK: change habit completions per day
-                VStack(alignment: .leading){
+                VStack{
                     Text("Completions per day:")
                         .fontWeight(.light)
                         .padding(.leading, 8)
                     HStack(alignment: .center){
-                        Spacer()
-                        TextField("1", text: $habitTimesPerDay)
+                        TextField(String(selectedHabit.timesPerDay), text: $habitTimesPerDay)
                             .padding(7.5)
                             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                             .disableAutocorrection(true)
@@ -80,9 +80,36 @@ struct EditHabitView: View {
                             .onSubmit {editHabitTimesPerDay()}
                         
                         Text("/   Day")
-                        Spacer()
+                            .fontWeight(.light)
                     }
                 }
+                
+                
+                // MARK: change habit icon
+                VStack{
+                    Text("Icon")
+                        .fontWeight(.light)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, -16)
+                    
+                    Button(action:{
+                        showingSheet.toggle()
+                    }, label:{
+                        ZStack{
+                            Text("")
+                                .frame(width: 60, height: 60)
+                                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            Image(icons[Int(habitIcon)])
+                        }
+                    })
+                    .sheet(isPresented: $showingSheet, onDismiss: {
+                        editHabitIcon()
+                    }) {
+                        HabitIconView(iconIndex: $habitIcon)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+                
                 
                 // MARK: change habit colour
                 ScrollView(.horizontal){
@@ -143,6 +170,7 @@ struct EditHabitView: View {
             }
         }
         .background(LinearGradient(gradient: Gradient(colors: [Color(selectedHabit.color!).opacity(0.4), .black]), startPoint: .top, endPoint: .bottom))
+        .toolbar(.hidden, for: .tabBar)
     }
     func editHabitTitle(){
         selectedHabit.title = habitTitle
@@ -164,6 +192,15 @@ struct EditHabitView: View {
     
     func editHabitTimesPerDay(){
         selectedHabit.timesPerDay = Int64(habitTimesPerDay)!
+        do {
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func editHabitIcon(){
+        selectedHabit.icon = habitIcon
         do {
             try viewContext.save()
         } catch {

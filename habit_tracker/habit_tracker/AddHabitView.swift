@@ -16,9 +16,15 @@ struct AddHabitView: View {
     @State var habitTitle: String = ""
     @State var habitDescription: String = ""
     @State var habitTimesPerDay: String = "1"
+    @State var habitIcon: Int64 = 0
     @State var habitColor: String = "IDColor 1"
     @State var habitWeekDays: [String] = Calendar.current.weekdaySymbols
+    
     @FocusState var titleFocus: Bool
+    @State var showingSheet: Bool = false
+    
+    @FetchRequest(sortDescriptors: [])
+    private var habitsUnsectioned: FetchedResults<Habit>
     
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentationMode
@@ -26,7 +32,7 @@ struct AddHabitView: View {
     var body: some View {
         NavigationView{
             ScrollView{
-                VStack(spacing: 32){
+                VStack(spacing: 50){
                     
                     // MARK: textfield to enter habit title
                     TextField("Title...", text: $habitTitle)
@@ -39,6 +45,7 @@ struct AddHabitView: View {
                         .focused($titleFocus)
                         .onAppear{DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){titleFocus = true}}
                         .disableAutocorrection(true)
+                    
                     
                     // MARK: textfield to enter habit description
                     TextField("Description...", text: $habitDescription)
@@ -57,6 +64,31 @@ struct AddHabitView: View {
                             .frame(maxWidth: 35)
                         
                         Text("/   Day")
+                            .fontWeight(.light)
+                    }
+                    
+                    
+                    // MARK: habit icon selection
+                    VStack{
+                        Text("Icon")
+                            .fontWeight(.light)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.top, -16)
+                        
+                        Button(action:{
+                            showingSheet.toggle()
+                        }, label:{
+                            ZStack{
+                                Text("")
+                                    .frame(width: 60, height: 60)
+                                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                Image(icons[Int(habitIcon)])
+                            }
+                        })
+                        .sheet(isPresented: $showingSheet){
+                            HabitIconView(iconIndex: $habitIcon)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                     
                     // MARK: habit color picker
@@ -81,6 +113,7 @@ struct AddHabitView: View {
                                     }
                             }
                         }
+                        .padding(.bottom, 12)
                     }
                     
                     // MARK: week day selector
@@ -111,8 +144,6 @@ struct AddHabitView: View {
                         }
                     }
                     
-                    Spacer()
-                    
                     Button(action: addHabit){
                         Text("Add to list")
                             .fontWeight(.light)
@@ -124,6 +155,7 @@ struct AddHabitView: View {
                             .shadow(color: Color(habitColor), radius: 60)
                     }
                     .font(.system(size:30))
+                    .padding(.top, 25)
                     
                     Spacer()
                 }
@@ -142,8 +174,10 @@ struct AddHabitView: View {
             newHabit.title = habitTitle
             newHabit.information = habitDescription
             newHabit.timesPerDay = Int64(habitTimesPerDay)!
+            newHabit.icon = habitIcon
             newHabit.weekDays = habitWeekDays
             newHabit.color = habitColor
+            newHabit.userOrder = (habitsUnsectioned.last?.userOrder ?? 0) + 1
             
             do {
                 try viewContext.save()
