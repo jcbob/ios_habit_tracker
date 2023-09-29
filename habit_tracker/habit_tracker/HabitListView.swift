@@ -89,6 +89,7 @@ struct HabitListView: View {
                                             Button(action: {completeHabit(habit: listedHabit)
                                             }, label: {
                                                 Image(systemName: "checkmark.circle.fill")
+                                                    .font(.largeTitle.weight(.black))
                                             })
                                             .tint(Color(listedHabit.color!))
                                         }
@@ -96,6 +97,7 @@ struct HabitListView: View {
                                             Button(action: {resetSelectedHabit(habit: listedHabit)
                                             }, label: {
                                                 Image(systemName: "gobackward")
+                                                    .font(.system(size: 60))
                                             })
                                             .tint(.indigo)
                                         }

@@ -23,7 +23,7 @@ struct AddHabitView: View {
     @FocusState var titleFocus: Bool
     @State var showingSheet: Bool = false
     
-    @FetchRequest(sortDescriptors: [])
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Habit.userOrder, ascending: true)])
     private var habitsUnsectioned: FetchedResults<Habit>
     
     @Environment(\.managedObjectContext) private var viewContext

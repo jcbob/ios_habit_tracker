@@ -23,6 +23,7 @@ My first take on a personal project - a habit tracker app for iOS
 - [ ] add graphs to see habit progress
 - [ ] add calendar functionality to see how many habits were done on a certain day of the week/month/year
 - [ ] add a streak property to help "keep up the good work..."
+- [ ] use the SF Symbols library rather than the one you used
 
 ### Stuff to do:
 - [x] implement list re-ordering into habit manager view only
