@@ -18,6 +18,12 @@ My first take on a personal project - a habit tracker app for iOS
 ## Features
 
 ### Future plans:
+- [ ] modify the app so each habit will have unique plant/creature that the user will have to take care of. Every day the user
+        has set the habit to be active the plant/creature has to be watered/fed so it can grow. If the user takes too long to water
+        a habit it will eventually die. Probably a lot of changes would have to be made UI-wise and logic-wise. But something to shoot
+        for.
+
+
 - [ ] add a posibility to group habits into sections using Form()?
 - [ ] make the listed habits using ScrollView{} for more customization and what not
 - [ ] add graphs to see habit progress
