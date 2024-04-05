@@ -1,19 +1,10 @@
 # Habit Tracker
+This is my repository for my first personal project using the Swift programming language - a habit tracker application for iOS
+
 ---
-My first take on a personal project - a habit tracker app for iOS
-
-## Habit class properties
-- title: String
-- status: String
-- timesPerDay: Int
-- timesCompletedToday: Int
-- description/information: String
-- completedCountTotal: Int
-- icon: Int64
-- color: String
-- weekDays: [String]
-- userOrder: Int64
-
+Date begun: June 2023 
+Date ended: -
+Author: Jakub Wolski
 
 ## Features
 
@@ -24,12 +15,12 @@ My first take on a personal project - a habit tracker app for iOS
         for.
 
 
-- [ ] add a posibility to group habits into sections using Form()?
-- [ ] make the listed habits using ScrollView{} for more customization and what not
+- [ ] add a posibility to group habits into sections using (Form()?)
+- [ ] make the listed habits using ScrollView{} for more customization
 - [ ] add graphs to see habit progress
 - [ ] add calendar functionality to see how many habits were done on a certain day of the week/month/year
 - [ ] add a streak property to help "keep up the good work..."
-- [ ] use the SF Symbols library rather than the one you used
+- [ ] use the SF Symbols library rather than the current one
 
 ### Stuff to do:
 - [x] implement list re-ordering into habit manager view only
@@ -37,7 +28,7 @@ My first take on a personal project - a habit tracker app for iOS
    - [x] detail view
    - [x] edit view
 - [x] create some sort of grid view (ZStack or newView) in AddHabitView for picking out an icon
- implement all the possible habit property changes in EditHabitView
+- [x] implement all the possible habit property changes in EditHabitView
 
 
 ### General:
@@ -96,3 +87,18 @@ My first take on a personal project - a habit tracker app for iOS
 - [ ] Edit button in Habit Manager doesn't work after adding a new habit
 
 ### Fixed
+
+
+## Habit class properties
+---
+- title: String
+- status: String
+- timesPerDay: Int
+- timesCompletedToday: Int
+- description/information: String
+- completedCountTotal: Int
+- icon: Int64
+- color: String
+- weekDays: [String]
+- userOrder: Int64
+
