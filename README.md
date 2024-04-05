@@ -2,9 +2,9 @@
 This is my repository for my first personal project using the Swift programming language - a habit tracker application for iOS
 
 ---
-Date begun: June 2023 
-Date ended: -
-Author: Jakub Wolski
+- Date begun: June 2023 
+- Date ended: -
+- Author: Jakub Wolski
 
 ## Features
 
